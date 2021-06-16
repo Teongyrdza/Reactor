@@ -1,4 +1,4 @@
-// swift-tools-version:5.3
+// swift-tools-version:5.4
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -17,6 +17,7 @@ let package = Package(
             name: "Reactor",
             targets: ["Reactor"]
         ),
+        .executable(name: "Benchmarks", targets: ["Benchmarks"])
     ],
     dependencies: [
         .package(url: "https://github.com/wickwirew/Runtime.git", from: .init(2, 2, 2))
@@ -32,5 +33,10 @@ let package = Package(
             name: "ReactorTests",
             dependencies: ["Reactor"]
         ),
+        .executableTarget(
+            name: "Benchmarks",
+            dependencies: ["Reactor"],
+            path: "Benchmarks"
+        )
     ]
 )
