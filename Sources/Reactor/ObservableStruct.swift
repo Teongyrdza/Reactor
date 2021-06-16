@@ -7,6 +7,6 @@
 
 import Combine
 
-protocol ObservableStruct {
+public protocol ObservableStruct {
     var objectWillChange: PassthroughSubject<Void, Never> { get }
 }
