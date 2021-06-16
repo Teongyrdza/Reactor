@@ -85,14 +85,11 @@ public extension ObservableStruct {
     /// A function to register all @StructPublished properties
     mutating func registerSubscriptions() {
         do {
-            let mirror = Mirror(reflecting: self)
             let info = try typeInfo(of: Self.self)
             
-            for child in mirror.children {
-                if var published = child.value as? Registerable, let name = child.label {
+            for property in info.properties {
+                if var published = try property.get(from: self) as? Registerable {
                     published.register(on: self)
-                    
-                    let property = try info.property(named: name)
                     try property.set(value: published, on: &self)
                 }
             }
