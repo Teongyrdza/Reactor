@@ -15,7 +15,7 @@ protocol Registerable {
 }
 
 @propertyWrapper
-public struct StructPublished<Value: Equatable>: Equatable, Registerable {
+public struct StructPublished<Value>: Registerable {
     private let objectWillChange = PassthroughSubject<Void, Never>()
     private var cancellables = Set<AnyCancellable>()
     private var subscribed = false
@@ -54,10 +54,6 @@ public struct StructPublished<Value: Equatable>: Equatable, Registerable {
         registered = true
     }
     
-    public static func == (lhs: StructPublished<Value>, rhs: StructPublished<Value>) -> Bool {
-        lhs.wrappedValue == rhs.wrappedValue
-    }
-    
     public init(wrappedValue: Value) {
         self.wrappedValue = wrappedValue
         
@@ -72,6 +68,12 @@ public struct StructPublished<Value: Equatable>: Equatable, Registerable {
         }
         
         subscribed = true
+    }
+}
+
+extension StructPublished: Equatable where Value: Equatable {
+    public static func == (lhs: StructPublished<Value>, rhs: StructPublished<Value>) -> Bool {
+        lhs.wrappedValue == rhs.wrappedValue
     }
 }
 
